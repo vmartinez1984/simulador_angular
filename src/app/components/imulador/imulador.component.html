@@ -1,0 +1,175 @@
+<div class="container mt-3">
+  <h2>Simulador de compra de USDC</h2>
+
+  <!-- cliente -->
+  <div class="row cliente">
+    <div class="col">
+      <mat-card>
+        <mat-card-header> Cliente </mat-card-header>
+        <mat-card-content>
+          <p>Total en la cuenta</p>
+          <p>{{ depositoIdepro | currency: 'BOB ' }}</p>
+          <p>Cuenta de deposito Idepro</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Wallet del client -->
+    <div class="col">
+      <mat-card>
+        <mat-card-header> Wallet del Cliente </mat-card-header>
+        <mat-card-content>
+          <p>Total en la cuenta</p>
+          <table class="table">
+            <tr>
+              <td>
+                Deposito
+              </td>
+              <td>
+                Comision
+              </td>
+              <td>
+                Total
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                {{ wallerCliente + usdComision | currency: 'USDC ' }}
+              </td>
+              <td>
+                {{ usdComision | currency: 'USDC '}} USDC
+              </td>
+              <td>
+                {{ wallerCliente | currency: 'USDC '}} USDC
+              </td>
+            </tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <!-- Tasa de cambio -->
+    <div class="col-4">
+      <form [formGroup]="formGroup" (submit)="colocarTasasDeCambio()">
+        <mat-card>
+          <mat-card-header> Tasas de cambio </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label>Tasa de cambio BeyondFI</mat-label>
+              <input
+                matInput
+                formControlName="tasaDeCambioBeyondFI"
+                placeholder="BeyondFI"
+              />
+            </mat-form-field>
+
+            <br />
+            <mat-form-field>
+              <mat-label>Tasa de cambio Panamerican</mat-label>
+              <input
+                matInput
+                formControlName="tasaDeCambioPanamerican"
+                placeholder="Panamerican"
+              />
+            </mat-form-field>
+
+            <br />
+            <mat-form-field>
+              <mat-label>Porcentaje de comición</mat-label>
+              <input
+                matInput
+                formControlName="porcentajeDeComision"
+                placeholder="Panamerican"
+              />
+            </mat-form-field>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button>Actualizar</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </div>
+
+    <div class="col-4">
+      <form [formGroup]="formGroupCalculo" (submit)="comprar()">
+        <mat-card>
+          <mat-card-header>Compra de UDC </mat-card-header>
+          <mat-card-content>
+            <p>Disponible en la cuenta</p>
+            <p>{{ depositoIdepro | currency: 'BOB ' }}</p>
+
+            <mat-form-field>
+              <mat-label>Ingrese los BOB</mat-label>
+              <input
+                matInput
+                formControlName="bolivianos"
+                type="number"
+                placeholder="Bolivianos"
+                min="0"
+                (keyup)="calcular()"
+              />
+            </mat-form-field>
+
+            <p>Comision: {{ comision | currency: 'BOB '}} </p>
+            <p>Bolivianos a usar: {{ bolivianosDespuesDeComision | currency: 'BOB '}} </p>
+            <p>Comprar: {{ usdcClienteCalculados | currency: 'USDC '}} </p>
+
+            <p>Precio de cambio: {{ tasaDeCambioBeyondFI }} BOB</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button>Comprar</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </div>
+
+    <!-- Calculos para las transacciones -->
+    <div class="col">
+      <mat-card>
+        <mat-card-header>Calculos para las transacciones</mat-card-header>
+        <mat-card-content>
+          <p>a comprar {{ usdcAComprar | currency: 'USDC '}}</p>
+          <p>Para el cliente {{ usdcCliente| currency: 'USDC ' }}</p>
+          <p>Spread {{ usdSpread | currency: 'USDC ' }}</p>
+          <p>Comision {{ usdComision | currency: 'USDC '}}</p>
+          <p>Comision {{ comision | currency: 'BOB '}}</p>
+          <p>
+            Comision para BeyondFI/Idepro {{ usdComisionBeyonFIDepro | currency: 'USDC ' }}
+          </p>
+          <p>Comision para Panamerican {{ usdComisionPanamerican | currency: 'USDC ' }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Wallets -->
+  <div class="row mt-3">
+    <div class="col-6">
+      <mat-card>
+        <mat-card-header> Wallet Panamerican </mat-card-header>
+        <mat-card-content>
+          <p>Total en la cuenta</p>
+          <p>{{ walletPanamerican | currency: 'USDC '}}</p>
+          <p>{{ usdComisionPanamerican | currency: 'USDC ' }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-6">
+      <mat-card>
+        <mat-card-header> Wallet BeyondFI </mat-card-header>
+        <mat-card-content>
+          <p>Total en la cuenta</p>
+          <p>Spred {{ usdSpread | currency : "USDC " }}</p>
+          <p>Comision {{ usdComisionBeyonFIDepro | currency : "USDC " }}</p>
+          <p>{{ walletBeyondFi | currency : "USDC " }}</p>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <button mat-button (click)="limpiar()">Limpiar</button>
+</div>
